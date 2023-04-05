@@ -9,6 +9,7 @@ const Header = () => {
             </div>
             <div>
                 <button className='btn'>Home</button>
+                {/* <Link to="/home">Home</Link> */}
                 <button className='btn'>Profile</button>
                 <button className='btn'>login</button>
             </div>
