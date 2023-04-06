@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { Context } from '../main'
 
 const Header = () => {
+
+    const { isAuthenticated, setisAuthenticated } = useContext(Context)
+
     return (
         <div className='header'>
             <div>
@@ -11,7 +15,11 @@ const Header = () => {
                 <button className='btn'>Home</button>
                 {/* <Link to="/home">Home</Link> */}
                 <button className='btn'>Profile</button>
-                <button className='btn'>login</button>
+
+                {
+                    isAuthenticated ? <button className='btn'>logout</button> : <button className='btn'>login</button>
+                }
+
             </div>
 
         </div>
