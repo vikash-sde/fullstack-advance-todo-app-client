@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { server } from '../App';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+import { Context } from '../main';
 
 const Register = () => {
+    const { isAuthenticated, setisAuthenticated } = useContext(Context)
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -31,11 +33,11 @@ const Register = () => {
             );
 
             toast.success(data.message);
-            // setIsAuthenticated(true);
+            setisAuthenticated(true);
             // setLoading(false);
         } catch (error) {
             toast.error(error.response.data.message);
-            // setIsAuthenticated(false);
+            setisAuthenticated(false);
             // setLoading(false);
         }
     };
