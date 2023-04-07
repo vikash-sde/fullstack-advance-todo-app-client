@@ -1,39 +1,48 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { Context } from '../main';
+import { toast } from 'react-hot-toast';
+import axios from 'axios';
+import { server } from '../App';
 
 const Login = () => {
+    const { isAuthenticated, setisAuthenticated, loading, setloading } = useContext(Context)
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        // setLoading(true);
+        setloading(true);
 
-        // try {
-        //     const { data } = await axios.post(
-        //         `${server}/users/login`,
-        //         {
-        //             email,
-        //             password,
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //             },
-        //             withCredentials: true,
-        //         }
-        //     );
+        try {
+            const { data } = await axios.post(
+                `${server}/users/login`,
+                {
+                    email,
+                    password,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                }
+            );
 
-        //     toast.success(data.message);
-        //     setIsAuthenticated(true);
-        //     setLoading(false);
-        // } catch (error) {
-        //     toast.error(error.response.data.message);
-        //     setLoading(false);
-        //     setIsAuthenticated(false);
-        // }
+            toast.success(data.message);
+            setisAuthenticated(true);
+            setloading(false);
+        } catch (error) {
+            toast.error(error.response.data.message);
+            setloading(false);
+            setisAuthenticated(false);
+        }
     };
+
+    if (isAuthenticated) return <Navigate to={"/"} />
+
 
     return (
         <div className="login">
@@ -54,7 +63,7 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
-                        // disabled={loading} 
+                        disabled={loading}
                         type="submit">
                         Login
                     </button>

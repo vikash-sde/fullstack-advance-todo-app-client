@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { server } from '../App';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
@@ -41,6 +41,8 @@ const Register = () => {
             // setLoading(false);
         }
     };
+
+    if (isAuthenticated) return <Navigate to={"/"} />
     return (
         <div className="login">
             <section>
