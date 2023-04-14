@@ -38,7 +38,6 @@ const Home = () => {
         axios.get(`${server}/task/all`, {
             withCredentials: true,
         }).then((res) => {
-            console.log(res.data.tasks);
             settasks(res.data.tasks)
         }).catch(err => {
             toast.error(err.response.data.message)

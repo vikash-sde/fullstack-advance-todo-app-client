@@ -12,24 +12,20 @@ import { Context } from './main';
 export const server = "https://advance-todoapp.onrender.com/api/v1"
 
 function App() {
-  const { user, setuser, setisAuthenticated, setloading } = useContext(Context)
+  const { setuser, setisAuthenticated, setloading } = useContext(Context)
 
 
   useEffect(() => {
     setloading(true)
-    try {
-      axios.get(`${server}/users/me`, { withCredentials: true }).then((res) => {
-        setuser(res.data.user)
-        setisAuthenticated(true)
-        setloading(false)
-
-      })
-    } catch (error) {
+    axios.get(`${server}/users/me`, { withCredentials: true }).then((res) => {
+      setuser(res.data.user)
+      setisAuthenticated(true)
+      setloading(false)
+    }).catch((error) => {
       setuser({})
       setisAuthenticated(false)
-
-    }
-
+      setloading(false)
+    })
 
   }, [])
 
