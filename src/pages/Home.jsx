@@ -3,6 +3,9 @@ import { useState } from 'react'
 import { server } from '../App'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
+import { useContext } from 'react'
+import { Context } from '../main'
+import { Navigate } from 'react-router-dom'
 
 const Home = () => {
 
@@ -10,8 +13,9 @@ const Home = () => {
     const [description, setdescription] = useState("")
     const [loading, setloading] = useState(false)
     const [tasks, settasks] = useState([])
+    const [refresh, setRefresh] = useState(false);
 
-
+    const { isAuthenticated } = useContext(Context);
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -27,6 +31,7 @@ const Home = () => {
             settitle("")
             toast.success(data.message)
             setloading(false)
+            setRefresh((prev) => !prev);
         }
         catch (error) {
             toast.error(error.response.data.message)
@@ -42,9 +47,9 @@ const Home = () => {
         }).catch(err => {
             toast.error(err.response.data.message)
         })
+    }, [refresh])
 
-
-    }, [])
+    if (!isAuthenticated) return <Navigate to={"/login"} />;
     return (
         <div className='container'>
             <div className="login">

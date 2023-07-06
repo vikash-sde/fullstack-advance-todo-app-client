@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Context } from '../main'
 import { server } from '../App'
 import axios from 'axios'
@@ -8,12 +8,10 @@ import { toast } from 'react-hot-toast'
 const Header = () => {
 
     const { isAuthenticated, setisAuthenticated, loading, setloading } = useContext(Context)
-
-
+    const navigate = useNavigate()
 
     const logoutHandler = async (e) => {
         setloading(true);
-
         try {
             await axios.get(
                 `${server}/users/logout`,
@@ -21,7 +19,7 @@ const Header = () => {
                     withCredentials: true,
                 }
             );
-
+            navigate("/login")
             toast.success("Logged out Successfully");
             setisAuthenticated(false);
             setloading(false);
@@ -38,16 +36,17 @@ const Header = () => {
             <div>
                 <h2>Todo App</h2>
             </div>
-            <div>
-                <button className='btn'>Home</button>
-                {/* <Link to="/home">Home</Link> */}
-                <button className='btn'>Profile</button>
-
-                {
-                    isAuthenticated ? <button className='btn' onClick={logoutHandler} disabled={loading}>logout</button> : <button className='btn'>login</button>
-                }
-
-            </div>
+            <article>
+                <Link to={"/"}>Home</Link>
+                <Link to={"/profile"}>Profile</Link>
+                {isAuthenticated ? (
+                    <button disabled={loading} onClick={logoutHandler} className="btn">
+                        Logout
+                    </button>
+                ) : (
+                    <Link to={"/login"}>Login</Link>
+                )}
+            </article>
 
         </div>
 
